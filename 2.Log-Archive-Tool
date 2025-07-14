@@ -1,0 +1,25 @@
+#!/usr/bin/bash
+
+# Check if directory is provided
+if [ -z "$1" ]; then
+    echo "Usage: $0 <log-directory>"
+    exit 1
+fi
+#$1 is the first argument passed to the script when you run it.
+#It assigns that to the variable LOG_DIR, which is then used to compress logs from that specific directory.
+
+LOG_DIR=$1
+
+TIMESTAMP=$(date +"%Y%m%d_%H%M%S")
+ARCHIVE_NAME="logs_archive_${TIMESTAMP}.tar.gz"
+DEST_DIR="$HOME/log-archiver/archived-logs"
+LOG_FILE="$HOME/log-archiver/archive-log.txt"
+
+# Check if the log directory exists
+if [ ! -d "$LOG_DIR" ]; then
+    echo "Log directory does not exist: $LOG_DIR"
+    exit 1
+fi
+
+# Create archive directory if it doesn't exist
+mkdir -p "$DEST_DIR"
