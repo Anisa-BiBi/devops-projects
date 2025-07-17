@@ -5,7 +5,7 @@ on:
     branches:
       - main
     paths:
-      - 'index.html'  # Trigger only if index.html changes
+     - 'gh-deployment-workflow/index.html'  # Trigger only if index.html changes
 
 jobs:
   deploy:
@@ -21,7 +21,7 @@ jobs:
     - name: Upload artifact
       uses: actions/upload-pages-artifact@v3
       with:
-        path: '.'
+          path: 'gh-deployment-workflow'
 
     - name: Deploy to GitHub Pages
       id: deployment
