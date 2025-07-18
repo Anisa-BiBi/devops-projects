@@ -11,6 +11,11 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
 
+    permissions:  # ✅ This is required
+      contents: read
+      pages: write
+      id-token: write  # ✅ Required for OIDC to work
+
     steps:
     - name: Checkout code
       uses: actions/checkout@v4
