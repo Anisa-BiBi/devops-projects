@@ -53,12 +53,55 @@ I am using Amazon Linux on AWS as the server and Ubuntu as the client machine (b
       Edit default NGINX config:
       + vim /etc/nginx/nginx.conf
       + Under server { ... }, >> update the location / block:>> 
+      
       location / {
          root /var/www/weather-app;
          index index.html;
       }
       Then restart NGINX:
       + systemctl restart nginx
+      
+      ------- OR--------
+      write your custom config file >>> weather.conf >>> 
+      vim /etc/nginx/conf.d/weather.conf
+      
+      server {
+    listen 80 default_server;
+    server_name static-site-server;
+
+    root /var/www/weather-app;
+    index index.html;
+
+    location / {
+        try_files $uri $uri/ =404;
+    }
+      }
+
+>>> NGINX on Amazon Linux often includes both /etc/nginx/nginx.conf and files in /etc/nginx/conf.d/*.conf. >>>
+Check if there’s a conflicting default.conf: >>> 
+ls /etc/nginx/conf.d/ >>>
+If you see default.conf, it may override your weather.conf.
+You can safely remove or rename it: >>>
++ sudo rm /etc/nginx/conf.d/default.conf
++ Before restarting NGINX, always test the configuration: >>>
++ sudo nginx -t
+you should see:
+-> nginx: the configuration file /etc/nginx/nginx.conf syntax is ok
+-> nginx: configuration file /etc/nginx/nginx.conf test is successful
+  
+ ✅ Summary of NGINX Config Structure
+we have a main config file: 
+   + /etc/nginx/nginx.conf >>>
+And a subdirectory for virtual hosts:
+   + /etc/nginx/conf.d/ >>>
+our custom site config weather.conf is correctly placed in conf.d/, which is the right spot.
+To check this, we just need to confirm that nginx.conf includes conf.d/*.conf, so your weather.conf is loaded.
+✅ Step 1: Check Main Config
+Run this:
+   + cat /etc/nginx/nginx.conf | grep include
+You should see something like:
+   + include /etc/nginx/conf.d/*.conf;
+If you do see that, your weather.conf is being loaded properly
 
 ✅ Step 4: Prepare for rsync Deployment
    4.1 Place .pem File on Ubuntu
@@ -66,6 +109,7 @@ I am using Amazon Linux on AWS as the server and Ubuntu as the client machine (b
       >> Copy your .pem file to Ubuntu (e.g., weather-key.pem)
       Set correct permissions:
       + nchmod 400 weather-key.pem
+      
 ✅ Step 5: Use rsync to Deploy Static Files
 Assuming you’re in your repo directory (weather-app/) on Ubuntu and your Amazon linux EC2 username is ec2-user:
       + rsync -avz -e "ssh -i weather-key.pem" ./ ec2-user@<EC2-PUBLIC-IP>:/var/www/weather-app
