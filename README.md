@@ -4,3 +4,4 @@ DevOps Projects
 3. GitHub Pages Deployment ..... (https://roadmap.sh/projects/github-actions-deployment-workflow)
 4. Nginx log Analyzer ..... (https://roadmap.sh/projects/nginx-log-analyser)
 5. SSH Remote Server Setup ..... (https://roadmap.sh/projects/ssh-remote-server-setup)
+6. Static Site Server ..... (https://roadmap.sh/projects/static-site-server)
