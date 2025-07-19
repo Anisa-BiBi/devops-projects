@@ -19,7 +19,7 @@ You can write a script deploy.sh which when you run will use rsync to sync your 
 Once you have completed the project, you should have a basic understanding of how to setup a web server using a basic static site served using Nginx. You should also have a basic understanding of how to use rsync to deploy your changes to the server.
 
 ##### Solution:
-Launch two instances >>> 1. linux server 2. ubuntu client 
+Launch two instances >>> 1. linux server 2. ubuntu client >>> connect them using ssh >>> ssh -i path.pem ec2-user/ubuntu@<pub-ip> >>>
 I am using Amazon Linux on AWS as the server and Ubuntu as the client machine (because my local machine don't support rsync) and my static site (weather app) is already in a GitHub repository.
 
 ✅ Step 1: Prepare Ubuntu Client (My Local Machine)
